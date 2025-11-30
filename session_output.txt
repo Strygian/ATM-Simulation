@@ -1,0 +1,116 @@
+Compiling ATM Simulation System...
+Compilation successful!
+
+Starting ATM Simulation System...
+
+[INFO] 2025-11-30 14:04:59 - Starting ATM Application...
+[INFO] 2025-11-30 14:04:59 - Setting up database...
+[INFO] 2025-11-30 14:05:00 - Users table created/verified.
+[INFO] 2025-11-30 14:05:00 - Accounts table created/verified.
+[INFO] 2025-11-30 14:05:00 - Transactions table created/verified.
+[INFO] 2025-11-30 14:05:00 - Database initialization completed successfully.
+[INFO] 2025-11-30 14:05:00 - Loading sample test accounts...
+[INFO] 2025-11-30 14:05:00 - Sample data already exists. Skipping load.
+
+========================================
+     WELCOME TO ATM SIMULATION SYSTEM
+========================================
+1. Login
+2. Exit
+========================================
+Enter your choice: 
+========== LOGIN ==========
+Enter Account ID: Enter PIN: 
+Login successful! Welcome to your account.
+
+========================================
+        ATM OPERATIONS MENU
+========================================
+1. Balance Inquiry
+2. Cash Deposit
+3. Cash Withdrawal
+4. Transaction History
+5. Logout
+========================================
+Enter your choice: 
+========== BALANCE INQUIRY ==========
+Your current balance: $5000.00
+
+========================================
+        ATM OPERATIONS MENU
+========================================
+1. Balance Inquiry
+2. Cash Deposit
+3. Cash Withdrawal
+4. Transaction History
+5. Logout
+========================================
+Enter your choice: 
+========== CASH DEPOSIT ==========
+Enter deposit amount ($): 
+Deposit successful!
+Deposited: $500.00
+New balance: $5500.00
+
+========================================
+        ATM OPERATIONS MENU
+========================================
+1. Balance Inquiry
+2. Cash Deposit
+3. Cash Withdrawal
+4. Transaction History
+5. Logout
+========================================
+Enter your choice: 
+========== BALANCE INQUIRY ==========
+Your current balance: $5500.00
+
+========================================
+        ATM OPERATIONS MENU
+========================================
+1. Balance Inquiry
+2. Cash Deposit
+3. Cash Withdrawal
+4. Transaction History
+5. Logout
+========================================
+Enter your choice: 
+========== CASH WITHDRAWAL ==========
+Enter withdrawal amount ($): 
+Withdrawal successful!
+Withdrawn: $200.00
+New balance: $5300.00
+
+========================================
+        ATM OPERATIONS MENU
+========================================
+1. Balance Inquiry
+2. Cash Deposit
+3. Cash Withdrawal
+4. Transaction History
+5. Logout
+========================================
+Enter your choice: 
+========== TRANSACTION HISTORY ==========
+Enter number of recent transactions to view (default: 10): 
+Recent 5 transactions:
+----------------------------------------------------------------------------------------------------
+TXN [8] Balance Inquiry | Type: BALANCE_CHECK | Amount:       0.00 | Balance:    5300.00 | Time: 2025-11-30 14:05:00
+TXN [7] Cash Withdrawal | Type: WITHDRAWAL   | Amount:     200.00 | Balance:    5300.00 | Time: 2025-11-30 14:05:00
+TXN [6] Balance Inquiry | Type: BALANCE_CHECK | Amount:       0.00 | Balance:    5500.00 | Time: 2025-11-30 14:05:00
+TXN [5] Balance Inquiry | Type: BALANCE_CHECK | Amount:       0.00 | Balance:    5500.00 | Time: 2025-11-30 14:05:00
+TXN [4] Cash Deposit | Type: DEPOSIT      | Amount:     500.00 | Balance:    5500.00 | Time: 2025-11-30 14:05:00
+----------------------------------------------------------------------------------------------------
+
+========================================
+        ATM OPERATIONS MENU
+========================================
+1. Balance Inquiry
+2. Cash Deposit
+3. Cash Withdrawal
+4. Transaction History
+5. Logout
+========================================
+Enter your choice: 
+========== CASH DEPOSIT ==========
+Enter deposit amount ($): Press any key to continue . . . 

@@ -1,0 +1,192 @@
+ATM SIMULATION SYSTEM - FLOW DIAGRAM
+=====================================
+
+SEQUENCE FLOW:
+==============
+
+1. STARTUP FLOW:
+   ┌─ AppMain.main()
+   ├─ DatabaseInit.initializeDatabase()
+   │  └─ Create users, accounts, transactions tables
+   ├─ DatabaseInit.loadSampleData()
+   │  └─ Insert sample users and accounts
+   └─ Start ATMConsoleUI
+
+2. LOGIN FLOW:
+   ┌─ User selects "Login"
+   ├─ Input Account ID and PIN
+   ├─ AuthService.authenticate(accountId, pin)
+   │  └─ AccountDAO.getAccountById(accountId)
+   │     └─ Query: SELECT * FROM accounts WHERE account_id = ?
+   ├─ Account.checkPin(pin) - Compare PIN
+   └─ On Success → Show Operations Menu
+
+3. BALANCE INQUIRY FLOW:
+   ┌─ User selects "Balance Inquiry"
+   ├─ ATMService.balanceInquiry(accountId)
+   │  ├─ AccountDAO.getAccountById(accountId)
+   │  └─ TransactionService.recordTransaction("BALANCE_CHECK", ...)
+   │     └─ TransactionDAO.addTransaction(...)
+   │        └─ INSERT INTO transactions ...
+   └─ Display current balance
+
+4. DEPOSIT FLOW:
+   ┌─ User selects "Deposit" and enters amount
+   ├─ ATMService.deposit(accountId, amount)
+   │  ├─ Validate amount > 0
+   │  ├─ Account.credit(amount) - Add to balance
+   │  ├─ AccountDAO.updateAccountBalance(account)
+   │  │  └─ UPDATE accounts SET balance = ? WHERE account_id = ?
+   │  └─ TransactionService.recordTransaction("DEPOSIT", ...)
+   │     └─ INSERT INTO transactions ...
+   └─ Display new balance
+
+5. WITHDRAWAL FLOW:
+   ┌─ User selects "Withdraw" and enters amount
+   ├─ ATMService.withdraw(accountId, amount)
+   │  ├─ Validate amount > 0
+   │  ├─ Check balance >= amount + $100 (minimum balance)
+   │  ├─ Account.debit(amount) - Subtract from balance
+   │  ├─ AccountDAO.updateAccountBalance(account)
+   │  │  └─ UPDATE accounts SET balance = ? WHERE account_id = ?
+   │  └─ TransactionService.recordTransaction("WITHDRAWAL", ...)
+   │     └─ INSERT INTO transactions ...
+   └─ Display new balance or error message
+
+6. TRANSACTION HISTORY FLOW:
+   ┌─ User selects "Transaction History"
+   ├─ Enter number of transactions to view (default: 10)
+   ├─ ATMService.viewTransactionHistory(accountId, limit)
+   │  └─ TransactionDAO.getTransactionsForAccount(accountId, limit)
+   │     └─ SELECT * FROM transactions WHERE account_id = ? 
+   │        ORDER BY timestamp DESC LIMIT ?
+   └─ Display formatted transaction list
+
+7. LOGOUT FLOW:
+   ┌─ User selects "Logout"
+   ├─ Set isLoggedIn = false
+   └─ Return to main menu
+
+DATABASE INTERACTION:
+====================
+
+AppMain
+  ├─ Creates: UserDAO, AccountDAO, TransactionDAO
+  ├─ Creates: AuthService, ATMService, TransactionService
+  └─ Launches: ATMConsoleUI
+
+ATMConsoleUI (UI Layer)
+  ├─ Calls: AuthService for login
+  └─ Calls: ATMService for operations
+
+AuthService (Service Layer)
+  └─ Uses: AccountDAO for account lookup
+
+ATMService (Service Layer)
+  ├─ Uses: AccountDAO for account data
+  ├─ Uses: TransactionDAO for logging
+  └─ Calls: TransactionService for recording
+
+TransactionService (Service Layer)
+  └─ Uses: TransactionDAO for DB operations
+
+DAO Layer (Database Access)
+  ├─ AccountDAO ─ CRUD on accounts table
+  ├─ UserDAO ─ CRUD on users table
+  ├─ TransactionDAO ─ CRUD on transactions table
+  └─ DBConnection ─ Manages JDBC connections
+
+SQLite Database
+  ├─ users table
+  ├─ accounts table
+  └─ transactions table
+
+OBJECT RELATIONSHIPS:
+====================
+
+User (1) ─────── (1) Account
+          has
+
+Account (1) ─────── (*) Transaction
+             creates
+
+ER DIAGRAM:
+===========
+
+┌────────────┐
+│    users   │
+├────────────┤
+│ user_id (PK)
+│ name
+│ email
+│ created_at
+└────────────┘
+      │
+      │ (1:1)
+      │
+┌────────────────┐
+│   accounts     │
+├────────────────┤
+│ account_id (PK)
+│ user_id (FK) ──→ users.user_id
+│ pin_hash
+│ balance
+│ status
+│ created_at
+└────────────────┘
+      │
+      │ (1:*)
+      │
+┌──────────────────┐
+│  transactions    │
+├──────────────────┤
+│ txn_id (PK)
+│ account_id (FK) ──→ accounts.account_id
+│ type
+│ amount
+│ timestamp
+│ description
+│ balance_after
+└──────────────────┘
+
+SECURITY FLOW:
+==============
+
+PIN Verification:
+  User Input PIN → AuthService.authenticate()
+                → Account.checkPin(pin)
+                → String comparison (plain text)
+                → Return boolean
+
+Future: PIN Hashing
+  User Input PIN → Hash(PIN) using bcrypt
+                → Compare with stored hash
+                → Return boolean
+
+TRANSACTION RECORDING:
+======================
+
+Every operation records a transaction:
+
+Balance Check:
+  Type: "BALANCE_CHECK"
+  Amount: 0.0
+  Description: "Balance Inquiry"
+
+Deposit:
+  Type: "DEPOSIT"
+  Amount: entered amount
+  Description: "Cash Deposit"
+
+Withdrawal:
+  Type: "WITHDRAWAL"
+  Amount: entered amount
+  Description: "Cash Withdrawal"
+
+All transactions include:
+  - Timestamp (current date/time)
+  - Account ID
+  - Balance snapshot (after transaction)
+  - Unique transaction ID (auto-generated)
+
+This creates a complete audit trail of all account activity.

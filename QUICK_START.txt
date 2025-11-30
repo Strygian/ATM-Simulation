@@ -1,0 +1,216 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║           ATM SIMULATION SYSTEM - QUICK START GUIDE (1 PAGE)                 ║
+║                    One-Day Project - Ready to Present                        ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+📁 PROJECT LOCATION
+═══════════════════════════════════════════════════════════════════════════════
+C:\atm-simulation
+
+🚀 QUICK START (3 STEPS)
+═══════════════════════════════════════════════════════════════════════════════
+
+STEP 1: COMPILE
+  Option A (Recommended - Windows):
+    C:\atm-simulation> run.bat
+
+  Option B (Manual - Windows):
+    C:\atm-simulation> javac -cp "lib\*" -d bin ^
+    src\main\java\model\*.java src\main\java\dao\*.java ^
+    src\main\java\service\*.java src\main\java\ui\*.java ^
+    src\main\java\util\*.java src\main\java\AppMain.java
+
+STEP 2: RUN
+  C:\atm-simulation> java -cp "bin;lib\*" AppMain
+
+STEP 3: LOGIN & TEST
+  Account ID: 1
+  PIN: 1234
+
+✅ SAMPLE TEST ACCOUNTS
+═══════════════════════════════════════════════════════════════════════════════
+
+┌─────────────┬──────────────────┬─────┬──────────────┐
+│ Account ID  │ Customer Name    │ PIN │ Balance      │
+├─────────────┼──────────────────┼─────┼──────────────┤
+│ 1           │ John Doe         │1234 │ $5,000.00    │
+│ 2           │ Jane Smith       │5678 │ $3,500.00    │
+│ 3           │ Bob Johnson      │9012 │ $2,500.00    │
+└─────────────┴──────────────────┴─────┴──────────────┘
+
+🎯 TEST SCENARIOS FOR DEMONSTRATION
+═══════════════════════════════════════════════════════════════════════════════
+
+SCENARIO 1: Successful Login & Balance Check
+  1. Login with ID=1, PIN=1234
+  2. Select "1. Balance Inquiry"
+  3. Result: Shows $5,000.00
+
+SCENARIO 2: Deposit Operation
+  1. Login with ID=1, PIN=1234
+  2. Select "2. Cash Deposit"
+  3. Enter amount: 500
+  4. Result: New balance = $5,500.00
+
+SCENARIO 3: Withdrawal Operation
+  1. Login with ID=1, PIN=1234
+  2. Select "3. Cash Withdrawal"
+  3. Enter amount: 200
+  4. Result: New balance = $4,800.00
+
+SCENARIO 4: Transaction History
+  1. Login with ID=1, PIN=1234
+  2. Select "4. Transaction History"
+  3. Result: Shows all account transactions
+
+SCENARIO 5: Invalid Login
+  1. Try Account ID=999, PIN=0000
+  2. Result: "Login failed!" message
+
+SCENARIO 6: Insufficient Balance
+  1. Login with ID=3, PIN=9012 (Balance: $2,500)
+  2. Select "3. Cash Withdrawal"
+  3. Enter amount: 2500 (exceeds $100 minimum)
+  4. Result: Error message about minimum balance
+
+📊 PROJECT STRUCTURE OVERVIEW
+═══════════════════════════════════════════════════════════════════════════════
+
+Model Layer (Data)
+  ├─ User.java ........... Customer information
+  ├─ Account.java ........ Bank account with balance/PIN
+  └─ Transaction.java .... Transaction records
+
+DAO Layer (Database)
+  ├─ DBConnection.java ... JDBC connection manager
+  ├─ UserDAO.java ........ User database operations
+  ├─ AccountDAO.java ..... Account database operations
+  ├─ TransactionDAO.java . Transaction database operations
+  └─ DatabaseInit.java ... Schema creation & sample data
+
+Service Layer (Business Logic)
+  ├─ AuthService.java .... User authentication
+  ├─ ATMService.java ..... ATM operations
+  └─ TransactionService.java ... Transaction logging
+
+UI Layer (User Interface)
+  └─ ATMConsoleUI.java ... Console menu system
+
+💾 DATABASE
+═══════════════════════════════════════════════════════════════════════════════
+
+Type: SQLite 3
+File: atm_database.db (auto-created in C:\atm-simulation on first run)
+Driver: sqlite-jdbc-3.43.0.0.jar
+
+Tables:
+  ✓ users ........... Customer information
+  ✓ accounts ....... Bank accounts with balances
+  ✓ transactions ... Complete transaction audit trail
+
+📋 KEY FEATURES
+═══════════════════════════════════════════════════════════════════════════════
+
+✓ User Authentication (PIN verification)
+✓ Balance Inquiry with transaction logging
+✓ Cash Deposit with automatic balance update
+✓ Cash Withdrawal with insufficient balance check
+✓ Minimum balance enforcement ($100)
+✓ Complete transaction history
+✓ Input validation
+✓ SQL injection prevention (prepared statements)
+✓ Automatic database initialization
+✓ Sample data auto-loading
+✓ Professional console UI
+✓ Comprehensive logging
+
+📚 DOCUMENTATION FILES
+═══════════════════════════════════════════════════════════════════════════════
+
+README.md ..................... Complete project documentation
+BUILD_RUN_GUIDE.txt ........... Detailed compilation guide
+PROJECT_SUMMARY.txt .......... Project completion summary
+ER_DIAGRAM.txt ............... Database entity-relationship diagram
+FLOW_DIAGRAM.txt ............. System flow and sequence diagrams
+schema.sql ................... Database schema DDL
+
+🏗️ ARCHITECTURE
+═══════════════════════════════════════════════════════════════════════════════
+
+┌─────────────────────────────────────────────────────────────┐
+│                    ATM Console UI                            │
+└────────┬─────────────────────────────────────────────────────┘
+         │
+┌────────▼────────────────────────────────────────────────────┐
+│         Service Layer (Business Logic)                       │
+│  ┌──────────────┐ ┌──────────────┐ ┌──────────────────┐     │
+│  │ AuthService  │ │ ATMService   │ │TransactionService│     │
+│  └──────────────┘ └──────────────┘ └──────────────────┘     │
+└────────┬─────────────────────────────────────────────────────┘
+         │
+┌────────▼────────────────────────────────────────────────────┐
+│            DAO Layer (Database Access)                       │
+│  ┌──────────────┐ ┌──────────────┐ ┌──────────────────┐     │
+│  │  UserDAO     │ │ AccountDAO   │ │TransactionDAO    │     │
+│  └──────────────┘ └──────────────┘ └──────────────────┘     │
+│                     │                                         │
+│                ┌────▼────────────┐                           │
+│                │  DBConnection   │                           │
+│                └────┬────────────┘                           │
+└─────────────────────┼────────────────────────────────────────┘
+                      │
+        ┌─────────────▼─────────────┐
+        │   SQLite Database File    │
+        │  (atm_database.db)        │
+        └───────────────────────────┘
+
+⚙️ SYSTEM REQUIREMENTS
+═══════════════════════════════════════════════════════════════════════════════
+
+✓ Java Development Kit (JDK) 8 or higher
+✓ Windows, Linux, or macOS
+✓ SQLite JDBC Driver (included: sqlite-jdbc-3.43.0.0.jar)
+✓ ~100 MB disk space
+
+❌ NO Additional External Dependencies Required
+
+🔒 SECURITY FEATURES
+═══════════════════════════════════════════════════════════════════════════════
+
+✓ PIN verification for authentication
+✓ Prepared statements to prevent SQL injection
+✓ Input validation for all user inputs
+✓ Account status checking (ACTIVE/LOCKED)
+✓ Transaction audit trail
+
+Note: This is an educational project. For production:
+  • Hash PINs using bcrypt/PBKDF2
+  • Use SSL/TLS encryption
+  • Implement session timeout
+  • Add comprehensive logging
+  • Use connection pooling
+
+📞 SUPPORT & TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════════════════════
+
+Error: "Cannot find class AppMain"
+→ Ensure you're in C:\atm-simulation directory
+
+Error: "SQLite JDBC driver not found"
+→ Check: lib\sqlite-jdbc-3.43.0.0.jar exists
+
+Error: "Database locked"
+→ Delete atm_database.db and restart
+
+Java not found?
+→ Install JDK from: https://www.oracle.com/java/technologies/downloads/
+
+═══════════════════════════════════════════════════════════════════════════════
+
+                    READY FOR PRESENTATION! ✅
+                    
+           All components compiled, tested, and working.
+           Database auto-initializes with sample data.
+           Demo scenarios ready to execute.
+
+═══════════════════════════════════════════════════════════════════════════════

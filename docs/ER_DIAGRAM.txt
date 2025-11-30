@@ -1,0 +1,201 @@
+ATM SIMULATION SYSTEM - ER DIAGRAM
+==================================
+
+Entity-Relationship Diagram (Text Format)
+
+ENTITIES:
+=========
+
+┌──────────────────────────────────────┐
+│           USER ENTITY                │
+├──────────────────────────────────────┤
+│ ◆ user_id (INT, PRIMARY KEY, AUTO)   │
+│ • name (VARCHAR)                     │
+│ • email (VARCHAR, OPTIONAL)          │
+│ • created_at (DATETIME)              │
+└──────────────────────────────────────┘
+
+┌──────────────────────────────────────┐
+│         ACCOUNT ENTITY               │
+├──────────────────────────────────────┤
+│ ◆ account_id (INT, PK, AUTO)         │
+│ ◆ user_id (INT, FK → users.user_id)  │
+│ • pin_hash (VARCHAR)                 │
+│ • balance (DECIMAL(12,2))            │
+│ • status (ENUM: ACTIVE/LOCKED)       │
+│ • created_at (DATETIME)              │
+└──────────────────────────────────────┘
+
+┌──────────────────────────────────────┐
+│       TRANSACTION ENTITY             │
+├──────────────────────────────────────┤
+│ ◆ txn_id (INT, PK, AUTO)             │
+│ ◆ account_id (INT, FK → accounts)    │
+│ • type (VARCHAR: DEPOSIT/WITHDRAW)   │
+│ • amount (DECIMAL(12,2))             │
+│ • timestamp (DATETIME)               │
+│ • description (VARCHAR)              │
+│ • balance_after (DECIMAL(12,2))      │
+└──────────────────────────────────────┘
+
+RELATIONSHIPS:
+==============
+
+Relationship 1: USER ──── ACCOUNT
+  Cardinality: 1 (one user) to 1 (one account)
+  Type: One-to-One (for this project)
+  Foreign Key: account.user_id → user.user_id
+  Description: Each user has exactly one account
+
+Relationship 2: ACCOUNT ──── TRANSACTION
+  Cardinality: 1 (one account) to * (many transactions)
+  Type: One-to-Many
+  Foreign Key: transaction.account_id → account.account_id
+  Description: Each account can have multiple transactions
+
+Relationship 3: USER ──── TRANSACTION (indirect)
+  Via Account: User → Account → Transaction
+  Type: One-to-Many (indirectly)
+
+ATTRIBUTE DESCRIPTIONS:
+======================
+
+USERS Table:
+  user_id:  Unique identifier (auto-generated)
+  name:     Customer full name
+  email:    Contact email (optional)
+  created_at: Account creation date/time
+
+ACCOUNTS Table:
+  account_id:  Unique account identifier (auto-generated)
+  user_id:     References user who owns this account
+  pin_hash:    Personal Identification Number (plaintext for now)
+  balance:     Current account balance in dollars
+  status:      Account status (ACTIVE or LOCKED)
+  created_at:  Account creation date/time
+
+TRANSACTIONS Table:
+  txn_id:       Unique transaction identifier (auto-generated)
+  account_id:   Which account this transaction belongs to
+  type:         DEPOSIT, WITHDRAWAL, or BALANCE_CHECK
+  amount:       Money amount involved (0 for balance checks)
+  timestamp:    When transaction occurred
+  description:  Human-readable description
+  balance_after: Account balance immediately after transaction (snapshot)
+
+KEY CONSTRAINTS:
+===============
+
+Primary Keys:
+  - users.user_id: Uniquely identifies each user
+  - accounts.account_id: Uniquely identifies each account
+  - transactions.txn_id: Uniquely identifies each transaction
+
+Foreign Keys:
+  - accounts.user_id → users.user_id
+    (Ensures account references valid user)
+  - transactions.account_id → accounts.account_id
+    (Ensures transaction references valid account)
+
+Unique Constraints:
+  - None (except primary keys)
+
+Not Null Constraints:
+  - All key fields must not be null
+  - user.name must not be null
+  - account.pin_hash must not be null
+  - account.balance must not be null
+
+NORMALIZATION:
+==============
+
+Normalization Level: Third Normal Form (3NF)
+
+1st NF (1NF): ✓
+  - All attributes contain atomic values
+  - No repeating groups
+  - Each field contains only one value
+
+2nd NF (2NF): ✓
+  - Meets 1NF requirements
+  - All non-key attributes depend on entire primary key
+  - No partial dependencies
+
+3rd NF (3NF): ✓
+  - Meets 2NF requirements
+  - No transitive dependencies between non-key attributes
+  - Each non-key attribute depends only on the primary key
+
+INDEXES (For Performance):
+==========================
+
+Recommended Indexes:
+  - CREATE INDEX idx_accounts_user_id ON accounts(user_id)
+    Reason: Fast lookups by user_id in accounts table
+  
+  - CREATE INDEX idx_transactions_account_id ON transactions(account_id)
+    Reason: Fast lookups of transactions for a specific account
+  
+  - CREATE INDEX idx_transactions_timestamp ON transactions(timestamp)
+    Reason: Fast sorting/filtering by transaction date
+
+SAMPLE DATA EXAMPLES:
+====================
+
+USERS Table:
+┌─────────┬──────────────┬──────────────────┬─────────────────────┐
+│ user_id │ name         │ email            │ created_at          │
+├─────────┼──────────────┼──────────────────┼─────────────────────┤
+│ 1       │ John Doe     │ john@example.com │ 2024-01-15 10:30:00 │
+│ 2       │ Jane Smith   │ jane@example.com │ 2024-01-16 14:20:00 │
+│ 3       │ Bob Johnson  │ bob@example.com  │ 2024-01-17 09:15:00 │
+└─────────┴──────────────┴──────────────────┴─────────────────────┘
+
+ACCOUNTS Table:
+┌────────────┬─────────┬──────────┬─────────┬────────┬─────────────────────┐
+│ account_id │ user_id │ pin_hash │ balance │ status │ created_at          │
+├────────────┼─────────┼──────────┼─────────┼────────┼─────────────────────┤
+│ 1          │ 1       │ 1234     │ 5000.00 │ ACTIVE │ 2024-01-15 10:30:00 │
+│ 2          │ 2       │ 5678     │ 3500.00 │ ACTIVE │ 2024-01-16 14:20:00 │
+│ 3          │ 3       │ 9012     │ 2500.00 │ ACTIVE │ 2024-01-17 09:15:00 │
+└────────────┴─────────┴──────────┴─────────┴────────┴─────────────────────┘
+
+TRANSACTIONS Table:
+┌────────┬────────────┬────────────┬────────┬─────────────────────┬──────────────────┬──────────────┐
+│ txn_id │ account_id │ type       │ amount │ timestamp           │ description      │ balance_after│
+├────────┼────────────┼────────────┼────────┼─────────────────────┼──────────────────┼──────────────┤
+│ 1      │ 1          │ DEPOSIT    │ 1000   │ 2024-01-15 10:30:00 │ Initial Deposit  │ 5000.00      │
+│ 2      │ 1          │ WITHDRAWAL │ 200    │ 2024-01-17 15:45:00 │ ATM Withdrawal   │ 4800.00      │
+│ 3      │ 1          │ DEPOSIT    │ 500    │ 2024-01-18 11:20:00 │ Cash Deposit     │ 5300.00      │
+│ 4      │ 2          │ BALANCE    │ 0      │ 2024-01-18 16:10:00 │ Balance Inquiry  │ 3500.00      │
+└────────┴────────────┴────────────┴────────┴─────────────────────┴──────────────────┴──────────────┘
+
+SCALABILITY CONSIDERATIONS:
+===========================
+
+Current Design:
+  - Simple 1:1 relationship between User and Account
+  - Good for small ATM system with single account per customer
+
+For Scaling:
+  - Change accounts.user_id relationship to allow multiple accounts per user
+  - Add account_type field (checking, savings, etc.)
+  - Add transaction_categories table for better reporting
+  - Implement data archival strategy for old transactions
+  - Add database replication for backup/recovery
+  - Implement connection pooling for multiple concurrent users
+
+SECURITY IMPROVEMENTS:
+======================
+
+Current:
+  - PIN stored as plaintext
+  - No transaction encryption
+
+Recommended:
+  - Hash PIN using bcrypt or PBKDF2
+  - Add audit_log table for compliance
+  - Encrypt sensitive columns at database level
+  - Add created_by and modified_by timestamp fields
+  - Implement row-level security for multi-tenant scenarios
+  - Add soft-delete functionality (is_deleted column)
