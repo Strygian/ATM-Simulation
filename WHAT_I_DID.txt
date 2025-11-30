@@ -1,65 +1,66 @@
-ATM PROJECT SUMMARY - What I Did
-==================================
+ATM PROJECT - What I Did
+=========================
 
-I made a simple ATM system for my class project.
+I built an ATM simulator for college. Here's what I made:
 
-Classes I Created:
-- User.java - stores customer name, email, created date
-- Account.java - stores balance, PIN, account status  
-- Transaction.java - stores transaction details
+Data Classes (model folder):
+- User.java: stores customer name, email, and when they were created
+- Account.java: stores the balance, PIN, and if account is active
+- Transaction.java: stores transaction info like type, amount, time, description
 
-Database Classes:
-- DBConnection.java - connects to SQLite database
-- UserDAO.java - saves/gets users from database
-- AccountDAO.java - saves/gets accounts from database
-- TransactionDAO.java - saves/gets transactions from database
-- DatabaseInit.java - creates tables and loads sample data
+Database Classes (dao folder):
+- DBConnection.java: connects Java to the SQLite database file
+- UserDAO.java: saves and reads user data from database
+- AccountDAO.java: saves and reads account data from database
+- TransactionDAO.java: saves and reads transaction data from database
+- DatabaseInit.java: creates the database tables and adds test data
 
-Service Classes:
-- AuthService.java - handles login and PIN checking
-- ATMService.java - handles deposit, withdrawal, balance check
-- TransactionService.java - records transactions
+Business Logic Classes (service folder):
+- AuthService.java: handles login - checks if Account ID and PIN are correct
+- ATMService.java: does the main ATM stuff - balance check, deposit, withdraw
+- TransactionService.java: records what the user did in the transactions table
 
-Menu Class:
-- ATMConsoleUI.java - the menu system
+Menu Class (ui folder):
+- ATMConsoleUI.java: the menu that appears on screen - login, operations menu, etc
 
-Helper Classes:
-- InputValidator.java - checks if input is valid
-- Logger.java - prints messages to console
+Helper Classes (util folder):
+- InputValidator.java: checks if the input is a number, valid pin, etc
+- Logger.java: prints messages like [INFO], [ERROR], [WARN]
 
-Database:
-I use SQLite database with 3 tables:
-- users: stores customer info
-- accounts: stores account balance and PIN
-- transactions: stores all transactions (deposits, withdrawals, etc)
+Database Structure:
+- users table: stores customer name, email, created date
+- accounts table: stores account balance, PIN, status (ACTIVE/LOCKED)
+- transactions table: stores every deposit, withdrawal, balance check
 
-What Features Work:
+Features that work:
 ✓ Login with Account ID and PIN
-✓ Check balance
-✓ Deposit money
-✓ Withdraw money (minimum $100 balance required)
-✓ View transaction history
+✓ Check current balance
+✓ Deposit money (balance goes up)
+✓ Withdraw money (balance goes down, but must keep $100 minimum)
+✓ View transaction history (see last X transactions)
 ✓ Logout
 
-Test Accounts (automatically created):
-Account 1: ID=1, PIN=1234, Balance=$5000
-Account 2: ID=2, PIN=5678, Balance=$3500
-Account 3: ID=3, PIN=9012, Balance=$2500
+How the program works:
+1. Program starts and creates database/tables if needed
+2. Shows main menu (Login or Exit)
+3. User chooses Login
+4. User enters Account ID and PIN
+5. Program checks database if PIN matches
+6. If correct, show operations menu
+7. User picks what to do (balance, deposit, withdraw, history, logout)
+8. Program updates database with whatever they did
+9. Everything gets recorded as a transaction
 
-How to Compile:
-javac -cp "lib\*" -d bin src\main\java\model\*.java ^
-src\main\java\dao\*.java src\main\java\service\*.java ^
-src\main\java\ui\*.java src\main\java\util\*.java src\main\java\AppMain.java
+Test Accounts that are automatically created:
+- Account 1: ID=1, PIN=1234, Starting balance=$5000
+- Account 2: ID=2, PIN=5678, Starting balance=$3500
+- Account 3: ID=3, PIN=9012, Starting balance=$2500
 
-How to Run:
-java -cp "bin;lib\*" AppMain
-
-OR just run:
-run.bat
-
-What I Learned:
-- How to use JDBC to connect Java to SQLite database
-- How to organize code into packages (model, dao, service, ui)
-- How to handle user input with Scanner
-- How to create tables and insert/retrieve data from database
-- How to handle errors with try-catch blocks
+What I learned:
+- JDBC - how Java connects to databases
+- SQLite - simple database that stores as a file
+- Organizing code into packages (model, dao, service, ui)
+- Scanner - how to read user input
+- Try-catch - how to handle errors
+- SQL - writing queries to insert, select, update data
+- Database design - how to structure tables with relationships
