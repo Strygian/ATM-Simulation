@@ -56,6 +56,8 @@ Test Accounts that are automatically created:
 - Account 2: ID=2, PIN=5678, Starting balance=$3500
 - Account 3: ID=3, PIN=9012, Starting balance=$2500
 
+Use any of these when you run the program!
+
 What I learned:
 - JDBC - how Java connects to databases
 - SQLite - simple database that stores as a file

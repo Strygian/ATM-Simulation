@@ -78,11 +78,24 @@ I use SQLite with 3 tables:
 
 ## Test Accounts (already made for you)
 
-When you run the program, it automatically creates 3 test accounts:
+When you run the program, it automatically creates 3 test accounts you can use:
 
-Account ID 1 → PIN: 1234 → Balance: $5000
-Account ID 2 → PIN: 5678 → Balance: $3500
-Account ID 3 → PIN: 9012 → Balance: $2500
+**Account 1:**
+- Account ID: 1
+- PIN: 1234
+- Balance: $5000
+
+**Account 2:**
+- Account ID: 2
+- PIN: 5678
+- Balance: $3500
+
+**Account 3:**
+- Account ID: 3
+- PIN: 9012
+- Balance: $2500
+
+Just use these IDs and PINs to login!
 
 ## How to run it
 

@@ -51,11 +51,22 @@ I use SQLite with 3 tables:
 
 The program automatically creates 3 test accounts when you first run it:
 
-| Account ID | PIN  | Balance  |
-|-----------|------|----------|
-| 1         | 1234 | $5000    |
-| 2         | 5678 | $3500    |
-| 3         | 9012 | $2500    |
+**Account 1:**
+- ID: 1
+- PIN: 1234
+- Balance: $5000
+
+**Account 2:**
+- ID: 2
+- PIN: 5678
+- Balance: $3500
+
+**Account 3:**
+- ID: 3
+- PIN: 9012
+- Balance: $2500
+
+Use any of these to login and try out the ATM!
 
 ## How to Run
 

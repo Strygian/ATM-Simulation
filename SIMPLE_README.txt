@@ -46,6 +46,8 @@ Account 1: ID=1, PIN=1234, Balance=$5000
 Account 2: ID=2, PIN=5678, Balance=$3500
 Account 3: ID=3, PIN=9012, Balance=$2500
 
+Just type the ID and PIN when prompted to login!
+
 How to compile:
 javac -cp "lib\*" -d bin src\main\java\model\*.java ^
 src\main\java\dao\*.java src\main\java\service\*.java ^
