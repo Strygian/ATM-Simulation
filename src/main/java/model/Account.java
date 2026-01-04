@@ -40,7 +40,8 @@ public class Account {
         return pin;
     }
 
-    public double getBalance() {
+    // Getter for balance (synchronized for strict safety)
+    public synchronized double getBalance() {
         return balance;
     }
 
@@ -80,13 +81,15 @@ public class Account {
         return this.pin.equals(providedPin);
     }
 
-    public void credit(double amount) {
+    // Synchronized deposit method (credit)
+    public synchronized void credit(double amount) {
         if (amount > 0) {
             this.balance += amount;
         }
     }
 
-    public boolean debit(double amount) {
+    // Synchronized withdraw method (debit)
+    public synchronized boolean debit(double amount) {
         if (amount > 0 && this.balance >= amount) {
             this.balance -= amount;
             return true;
